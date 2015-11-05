@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
@@ -23,6 +24,7 @@ public class BookStore {
 	
 	static ArrayList<Student> initializeStudents() throws IOException{
 		ArrayList<Student> temp = new ArrayList<Student>();
+		try{
 		BufferedReader br = new BufferedReader(new FileReader(new File("./src/student.txt")));
 		String line;
 		while((line = br.readLine()) !=null){
@@ -44,10 +46,16 @@ public class BookStore {
 		
 		br.close();
 		return temp;
+		}
+		catch (FileNotFoundException e){
+		    JOptionPane.showMessageDialog(null,"File Not Found.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+		}
+		return null;
 	}
 	
 	static ArrayList<Course> initializeCourses() throws IOException{
 		ArrayList<Course> temp = new ArrayList<Course>();
+		try{
 		BufferedReader br = new BufferedReader(new FileReader(new File("./src/course.txt")));
 		String line;
 		
@@ -60,6 +68,11 @@ public class BookStore {
 		}
 		br.close();
 		return temp;
+		}
+		catch (FileNotFoundException e){
+		    JOptionPane.showMessageDialog(null,"File Not Found.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+		}
+		return null;
 	}
 	
 	static Student login(ArrayList<Student> studentList){
@@ -70,7 +83,6 @@ public class BookStore {
 			String username = JOptionPane.showInputDialog("Please enter your GNumber:");
 			
 			for(int i = 0; i < studentList.size(); i++){
-			  //made the == .equals because the object Gnumber won't equal the string username
 				if(studentList.get(i).getGNumber().equals(username)){
 					x = i;
 				}
@@ -89,7 +101,6 @@ public class BookStore {
 		String pass = studentList.get(x).getPassword();
 		while(y == JOptionPane.YES_OPTION){
 			String password = JOptionPane.showInputDialog("Please enter your Password:");
-			//made the == .equals because the object pass won't equal the string password
 			if(pass.equals(password)){
 				return studentList.get(x);
 			}
@@ -108,7 +119,6 @@ public class BookStore {
 		gNum = JOptionPane.showInputDialog("Enter your GNumber");
 		x = 1;
 		for(int i = 0; i < studentList.size(); i++){
-		  //made the == .equals because the object gnumber won't equal the string gnum
 			if(studentList.get(i).getGNumber().equals(gNum)){
 				JOptionPane.showMessageDialog(null, "That GNumber is already in use");
 				 x = -1;
@@ -177,7 +187,6 @@ public class BookStore {
 	}
 	//function used for the user inputs beside exitting the program
 	//it accepts the choice, course list, and the user into the function
-	
 	static Orders UserSelection(int choice, ArrayList<Course> courseList, Student user){
 	    //checks if the stock is greater than zero whether the user is waitlisted or not
         if(courseList.get(choice).getTextStock()>0){
