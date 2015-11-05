@@ -75,18 +75,37 @@ public class BookStore {
 		return null;
 	}
 	
-	static Student login(ArrayList<Student> studentList){
+		static Student login(ArrayList<Student> studentList){
 		int x = -1;
 		System.out.println(studentList.get(1).getGNumber());
 		System.out.println(studentList.get(1).getPassword());
 		while(x == -1){
-			String username = JOptionPane.showInputDialog("Please enter your GNumber:");
+		    //tries the user input to see if user inputs a valid Gnumber
+		    try{
+		        //gets user input
+		        String username = "G1";
+		        String integer_substring = "";
+		        int username_int =0;
+		        
+		        //while it is not a proper gnumber it makes the user input until it returns a valid Gnumber
+		        while (username.charAt(0)!= 'G' || username.length()!=9){
+		            JOptionPane.showMessageDialog(null,"GNumber Format GIIIIIIII I=Integer G=G", "GMU Bookstore", JOptionPane.INFORMATION_MESSAGE);
+			            username = JOptionPane.showInputDialog(null,"Please enter your GNumber:" , "GMU Bookstore", JOptionPane.INFORMATION_MESSAGE);
+			            if(username.length()!=9)
+			            {
+			                JOptionPane.showMessageDialog(null,"Gnumbers are 9 characters long", "GMU Bookstore", JOptionPane.INFORMATION_MESSAGE); 
+			            }
+			            integer_substring = username.substring(1);
+			            username_int = Integer.parseInt(integer_substring);
 			
-			for(int i = 0; i < studentList.size(); i++){
-				if(studentList.get(i).getGNumber().equals(username)){
-					x = i;
-				}
-			}
+			        }
+			
+			         for(int i = 0; i < studentList.size(); i++){
+			            if(studentList.get(i).getGNumber().equals(username)){
+				            x = i;
+				        }
+			        }
+		    
 			if(x == -1){
 				x = JOptionPane.showConfirmDialog(null, "Sorry! We don't have your account. Do you want to create an account",
 						"GMU Bookstore", JOptionPane.YES_NO_OPTION);
@@ -97,6 +116,15 @@ public class BookStore {
 				}
 			}
 		}
+		    //this Exception catches if the user did not put a string higher than zero
+		catch (StringIndexOutOfBoundsException f){
+		   JOptionPane.showMessageDialog(null,"Don't leave it blank.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);       
+		 } 
+		 //this exception catches if the user input a string on non int value into the gnumber
+		catch (NumberFormatException e){
+		    JOptionPane.showMessageDialog(null,"Not a valid Gnumber.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+		    }
+		}
 		int y = JOptionPane.YES_OPTION;
 		String pass = studentList.get(x).getPassword();
 		while(y == JOptionPane.YES_OPTION){
@@ -106,6 +134,11 @@ public class BookStore {
 			}
 			y = JOptionPane.showConfirmDialog(null, "Thats not your password! Do you want to try again?",
 					"GMU Bookstore", JOptionPane.YES_NO_OPTION);
+			
+			//added this to the code because currently if I say no it would just send a null into my menu system
+			if (y==JOptionPane.NO_OPTION){
+			    System.exit(0);
+			}
 		}
 		return null;
 	}
