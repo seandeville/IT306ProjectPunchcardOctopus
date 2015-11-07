@@ -75,30 +75,15 @@ public class BookStore {
 		return null;
 	}
 	
-		static Student login(ArrayList<Student> studentList){
+	static Student login(ArrayList<Student> studentList){
 		int x = -1;
 		System.out.println(studentList.get(1).getGNumber());
 		System.out.println(studentList.get(1).getPassword());
 		while(x == -1){
+		  //modified into own function to be used in login and create account sections
 		    //tries the user input to see if user inputs a valid Gnumber
-		    try{
 		        //gets user input
-		        String username = "G1";
-		        String integer_substring = "";
-		        int username_int =0;
-		        
-		        //while it is not a proper gnumber it makes the user input until it returns a valid Gnumber
-		        while (username.charAt(0)!= 'G' || username.length()!=9){
-		            JOptionPane.showMessageDialog(null,"GNumber Format GIIIIIIII I=Integer G=G", "GMU Bookstore", JOptionPane.INFORMATION_MESSAGE);
-			            username = JOptionPane.showInputDialog(null,"Please enter your GNumber:" , "GMU Bookstore", JOptionPane.INFORMATION_MESSAGE);
-			            if(username.length()!=9)
-			            {
-			                JOptionPane.showMessageDialog(null,"Gnumbers are 9 characters long", "GMU Bookstore", JOptionPane.INFORMATION_MESSAGE); 
-			            }
-			            integer_substring = username.substring(1);
-			            username_int = Integer.parseInt(integer_substring);
-			
-			        }
+		          String username = BookStore.GNumber();
 			
 			         for(int i = 0; i < studentList.size(); i++){
 			            if(studentList.get(i).getGNumber().equals(username)){
@@ -111,19 +96,12 @@ public class BookStore {
 						"GMU Bookstore", JOptionPane.YES_NO_OPTION);
 				if(x == JOptionPane.YES_OPTION){
 					return createAccount(studentList);
-				} else {
+				} 
+				else {
 					x = -1;
 				}
 			}
-		}
-		    //this Exception catches if the user did not put a string higher than zero
-		catch (StringIndexOutOfBoundsException f){
-		   JOptionPane.showMessageDialog(null,"Don't leave it blank.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);       
-		 } 
-		 //this exception catches if the user input a string on non int value into the gnumber
-		catch (NumberFormatException e){
-		    JOptionPane.showMessageDialog(null,"Not a valid Gnumber.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
-		    }
+		
 		}
 		int y = JOptionPane.YES_OPTION;
 		String pass = studentList.get(x).getPassword();
@@ -144,12 +122,15 @@ public class BookStore {
 	}
 	
 	static Student createAccount(ArrayList<Student> studentList){
-		String fName = JOptionPane.showInputDialog("Enter your first name");
-		String lName = JOptionPane.showInputDialog("Enter your last name");
+	    //built functions to check if the string is greater than zero and puts the values into the fields
+	    //makes sure the user inputs a string greater than zero to the fields
+		String fName = BookStore.DeclaringUserfields("Enter your first name");
+		String lName = BookStore.DeclaringUserfields("Enter your last name");
 		String gNum = "";
 		int x = -1;
 		while(x == -1){
-		gNum = JOptionPane.showInputDialog("Enter your GNumber");
+		    //utilizes the Gnumber function to get a valid gnumber.
+		gNum = BookStore.GNumber();
 		x = 1;
 		for(int i = 0; i < studentList.size(); i++){
 			if(studentList.get(i).getGNumber().equals(gNum)){
@@ -159,10 +140,12 @@ public class BookStore {
 		}
 		
 		}
-		String pass = JOptionPane.showInputDialog("Enter your Password");
-		String pNum = JOptionPane.showInputDialog("Enter your phone number");
-		String eAdd = JOptionPane.showInputDialog("Enter your email");
-		String shipAdd = JOptionPane.showInputDialog("Enter your shipAdd");
+		//makes sure the user inputs a string greater than zero to the fields
+		String pass = BookStore.DeclaringUserfields("Enter your Password");
+		String pNum = BookStore.DeclaringUserfields("Enter your phone number");
+		String eAdd = BookStore.DeclaringUserfields("Enter your email");
+		String shipAdd = BookStore.DeclaringUserfields("Enter your shipAdd");
+		//returns the new student to the system for ordering
 		return new Student(fName, lName, gNum, pNum, eAdd, shipAdd, pass);
 	}
 	
@@ -176,43 +159,43 @@ public class BookStore {
 		    //tries the input and sees if it can be parsed to an int and if it between the range of 1-4
 		    try{
 		        //asks the user to input 1-4 value
-                   UpdateChoice = JOptionPane.showInputDialog(null,"Please select the books you need: \n1)IT 206\n2)IT 300\n3)IT 306\n4)Purchase Books",
+                   	UpdateChoice = JOptionPane.showInputDialog(null,"Please select the books you need: \n1)IT 206\n2)IT 300\n3)IT 306\n4)Purchase Books",
                        "GMU Bookstore",JOptionPane.QUESTION_MESSAGE);
                         Choice = Integer.parseInt(UpdateChoice);
                         //checks if user does not put a valid input to use
-                    while(Choice>4 || Choice<1){
-                    UpdateChoice = JOptionPane.showInputDialog(null, "Please select the books you need: \n1)IT 206\n2)IT 306\n3)IT 300\n4)Purchase Books",
-                            "GMU Bookstore", JOptionPane.QUESTION_MESSAGE);
-                    //the users choice is set
-                    Choice = Integer.parseInt(UpdateChoice);
+                    	while(Choice>4 || Choice<1){
+                    		UpdateChoice = JOptionPane.showInputDialog(null, "Please select the books you need: \n1)IT 206\n2)IT 306\n3)IT 300\n4)Purchase Books",
+                        	    "GMU Bookstore", JOptionPane.QUESTION_MESSAGE);
+                    		//the users choice is set
+                		 Choice = Integer.parseInt(UpdateChoice);
                          }
                     //checks the users choices and determines what to do with them
                     //1-3 add a order to the list of objects and 4 returns that list out of the function
-                    if(Choice == 1){
-                        Orders item = null;
-                       item = UserSelection(1, courseList, user);
-                       Stud_orders.add(item);
-                    }
-                    if(Choice == 2){
-                        Orders item = null;
-                       item = UserSelection(2, courseList, user);
-                       Stud_orders.add(item);
-                    }
-                    if(Choice == 3){
-                        Orders item = null;
-                       item = UserSelection(3, courseList, user);
-                       Stud_orders.add(item);
+                	 if(Choice == 1){
+                	   Orders item = null;
+                	   item = UserSelection(1, courseList, user);
+                	   Stud_orders.add(item);
+                	 }
+                    	if(Choice == 2){
+                	   Orders item = null;
+                	   item = UserSelection(2, courseList, user);
+                           Stud_orders.add(item);
+                	 }
+                	 if(Choice == 3){
+                	    Orders item = null;
+                	    item = UserSelection(3, courseList, user);
+                	    Stud_orders.add(item);
                         
-                    }
+                    	}
                     //returns the orders out to be used else where in the program
-                    if(Choice == 4){
-                        return Stud_orders;
-                    }
+                	 if(Choice == 4){
+                	    return Stud_orders;
+                    	}
 
-                }
-            catch (NumberFormatException f){
-                JOptionPane.showConfirmDialog(null,"Sorry, the value you entered was not 1-5! Please try again", "GMU Bookstore", JOptionPane.YES_OPTION, JOptionPane.ERROR_MESSAGE);
-                }
+                    }
+            	    catch (NumberFormatException f){
+                	JOptionPane.showConfirmDialog(null,"Sorry, the value you entered was not 1-5! Please try again", "GMU Bookstore", JOptionPane.YES_OPTION, JOptionPane.ERROR_MESSAGE);
+        		 }
 		}
 		
 		
@@ -242,5 +225,65 @@ public class BookStore {
 	        System.out.println(orderList.get(i).getCourse().getCourseID());
 	        
 	    }
+	}
+static String GNumber(){
+	    String username ="";
+	    boolean flag = false;
+	   while (flag ==false){
+	    	try{
+        	    //gets user input
+        	    username = "G1";
+        	    String integer_substring = "";
+        	    int username_int =0;
+            
+            	    //while it is not a proper gnumber it makes the user input until it returns a valid Gnumber
+            		while (username.charAt(0)!= 'G' || username.length()!=9){
+            			//Displays the format the user should input a gnumber and then asks user to input a gnumber
+        			 JOptionPane.showMessageDialog(null,"GNumber Format GIIIIIIII I=Integer G=G", "GMU Bookstore", JOptionPane.INFORMATION_MESSAGE);
+                		 username = JOptionPane.showInputDialog(null,"Please enter your GNumber:" , "GMU Bookstore", JOptionPane.INFORMATION_MESSAGE);
+                		 //checks if the gnumber is 9 length
+                		 if(username.length()!=9)
+                		 {
+                			    JOptionPane.showMessageDialog(null,"Gnumbers are 9 characters long", "GMU Bookstore", JOptionPane.INFORMATION_MESSAGE); 
+                		   }
+                		 integer_substring = username.substring(1);
+                    		username_int = Integer.parseInt(integer_substring);
+        
+        		 }
+            	  flag = true;
+            	  return username;
+	    	}
+        	//this Exception catches if the user did not put a string higher than zero
+            	catch (StringIndexOutOfBoundsException f){
+                	JOptionPane.showMessageDialog(null,"Don't leave it blank.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+                	flag = false;
+        	}   
+             	catch (NumberFormatException e){
+                	 JOptionPane.showMessageDialog(null,"Not a valid Gnumber.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+                	 flag = false;
+                 }
+	   }
+	    return null;
+	    
+	}
+	//function to take user input and makes sure the values are greater than zero to return a string
+	static String DeclaringUserfields(String fieldinfo){
+	    boolean flag = false;
+	    String test = "";
+	    while(flag == false){
+	        try{
+	             test =JOptionPane.showInputDialog(fieldinfo);
+	             //calls a charat function to see if the string exists and throws StringIndexOutOFBound Exception if it doesn't
+	             char testing = test.charAt(0);
+	            flag = true;
+	            return test;
+	        }
+	        //catches if the string is not greater than or equal to zero meaning it does not exist.
+	        catch (StringIndexOutOfBoundsException e){
+	            JOptionPane.showMessageDialog(null,"Don't leave it blank.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+	            flag = false;
+	        }
+	    }
+	    return test;
 	}
 }
