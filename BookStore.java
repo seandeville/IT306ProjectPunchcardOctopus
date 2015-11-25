@@ -139,7 +139,7 @@ public class BookStore {
   			}
   		}
 		String pNum = BookStore.phoneNumber("Enter your phone number");
-		String eAdd = JOptionPane.showInputDialog("Enter your email");
+		String eAdd = BookStore.email("Enter your email");
 		String shipAdd = JOptionPane.showInputDialog("Enter your shipAdd");
 		return new Student(fName, lName, gNum, pNum, eAdd, shipAdd, pass);
 	}
@@ -283,4 +283,44 @@ public class BookStore {
        		return test;
      
  		}
+ 		
+ static String email(String fieldinfo){
+     boolean flag = false;
+     String test = "";
+     while(flag == false){
+         try{
+              test =JOptionPane.showInputDialog(fieldinfo);
+              //calls a charat function to see if the string exists and throws StringIndexOutOFBound Exception if it doesn't
+              test.charAt(0);
+              String pattern = "^[A-Za-z0-9+_.-]+@+[A-Za-z0-9-]+[\\.]+([A-Za-z]{2,6})$";
+              Pattern email = Pattern.compile(pattern);
+              Matcher m = email.matcher(test);
+              if (m.matches() == false)
+              {
+                  JOptionPane.showMessageDialog(null, "Please input an appropriate email");
+              }
+        	 while(m.matches() == false){
+                  	test =JOptionPane.showInputDialog(fieldinfo);
+                	 m = email.matcher(test);
+                	 if (m.matches() == false){
+                	 JOptionPane.showMessageDialog(null, "Please input an appropriate email"); 
+                	 }
+                  	else{
+                	 flag =true;
+                	 return test;
+                  	}
+        	 }
+              
+              
+             	flag = true;
+        	 return test;
+        	 }
+        	 //catches if the string is not greater than or equal to zero meaning it does not exist.
+        	 catch (StringIndexOutOfBoundsException e){
+             	JOptionPane.showMessageDialog(null,"Don't leave it blank.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+             	flag = false;
+        	 }
+	 }
+	 return test;
+ 	}
 }
