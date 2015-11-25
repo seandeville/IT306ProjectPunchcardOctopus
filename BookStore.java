@@ -126,8 +126,19 @@ public class BookStore {
 		}
 		
 		}
-		String pass = JOptionPane.showInputDialog("Enter your Password");
-		String pNum = JOptionPane.showInputDialog("Enter your phone number");
+		  String pass = "";
+  		while(x == 1){
+      			//utilizes the Gnumber function to get a valid gnumber.
+  			pass = BookStore.DeclaringUserfields("Enter your Password");
+  			x = -1;
+  			for(int i = 0; i < studentList.size(); i++){
+      				if(studentList.get(i).getPassword().equals(pass)){
+        			 	JOptionPane.showMessageDialog(null, "That GNumber is already in use");
+        				 x = 1;
+       				}
+  			}
+  		}
+		String pNum = BookStore.phoneNumber("Enter your phone number");
 		String eAdd = JOptionPane.showInputDialog("Enter your email");
 		String shipAdd = JOptionPane.showInputDialog("Enter your shipAdd");
 		return new Student(fName, lName, gNum, pNum, eAdd, shipAdd, pass);
@@ -210,4 +221,66 @@ public class BookStore {
 	        
 	    }
 	}
+	
+	 static String DeclaringUserfields(String fieldinfo){
+     		boolean flag = false;
+     		String test = "";
+		 while(flag == false){
+        	 try{
+        		 test =JOptionPane.showInputDialog(fieldinfo);
+        		 //calls a charat function to see if the string exists and throws StringIndexOutOFBound Exception if it doesn't
+              		char testing = test.charAt(0);
+             		flag = true;
+             		return test;
+         	}
+         	//catches if the string is not greater than or equal to zero meaning it does not exist.
+        	 catch (StringIndexOutOfBoundsException e){
+        		 JOptionPane.showMessageDialog(null,"Don't leave it blank.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+             		flag = false;
+         		}
+		 }
+     		return test;
+	 }
+	 
+	 static String phoneNumber(String fieldinfo){
+	  	boolean flag = false;
+		 String test = "";
+		 while(flag == false){
+		     try{
+	      		JOptionPane.showMessageDialog(null, "Phone number format IIIIIIIIII I=Integer");
+	        	test =JOptionPane.showInputDialog(fieldinfo);
+	              //calls a charat function to see if the string exists and throws StringIndexOutOFBound Exception if it doesn't
+              		test.charAt(0);
+        		 if(test.length()!= 10){
+                	  JOptionPane.showMessageDialog(null,"Phone numbers are 10 characters long", "GMU Bookstore", JOptionPane.ERROR_MESSAGE);
+        		 }
+              		while(test.length()!= 10){
+                  		JOptionPane.showMessageDialog(null, "Phone number format IIIIIIIIII I=Integer");
+                		test =JOptionPane.showInputDialog(fieldinfo);
+                  		if(test.length()!=10){
+                      			JOptionPane.showMessageDialog(null,"Phone numbers are 10 characters long", "GMU Bookstore", JOptionPane.ERROR_MESSAGE);
+                  		}
+                   		else
+                		 {
+                  			for (int i =0; i<test.length(); i++){
+                      				Integer.parseInt(test.substring(i,i+1));
+                       				}
+                		 }
+              		}
+             		flag = true;
+             		return test;
+         	}
+         	//catches if the string is not greater than or equal to zero meaning it does not exist.
+         	catch (StringIndexOutOfBoundsException e){
+        		 JOptionPane.showMessageDialog(null,"Don't leave it blank.","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+             		flag = false;
+         		}
+         	catch( NumberFormatException e){
+             		JOptionPane.showMessageDialog(null,"Not a Valid Phone Number. Please insert only Integer values","GMU Bookstore",JOptionPane.ERROR_MESSAGE);
+             		flag = false;
+         		}
+     		}
+       		return test;
+     
+ 		}
 }
